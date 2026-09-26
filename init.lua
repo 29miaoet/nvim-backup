@@ -251,7 +251,7 @@ vim.keymap.set("n", "<leader>r", function()
     cpp = { "pwsh", "-NoExit", "-Command", "cpp '" .. file .. "'" },
     python = { "pwsh", "-NoExit", "-Command", "python '" .. file .. "'" },
     javascript = { "pwsh", "-NoExit", "-Command", "node '" .. file .. "'" },
-    typescript = { "pwsh", "-NoExit", "-Command", "tsx '" .. file .. "'" },
+    typescript = { "pwsh", "-NoExit", "-Command", "node '" .. file .. "'" },
     dosbatch = { "cmd", "/k", file },
     ps1 = { "pwsh", "-NoExit", "-File", file },
     html = { "pwsh", "-NoProfile", "-Command", "Start-Process '" .. file .. "'" },

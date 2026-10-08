@@ -101,29 +101,34 @@ vim.keymap.set("v", "<leader>/", ":s/^/#/<CR>", {
 })
 
 -- Automatically initialize and save folds
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+
+vim.opt.viewoptions = { "folds", "cursor" }
+
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function()
-    if pcall(vim.treesitter.get_parser, 0) then
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+    local has_parser = lang and pcall(vim.treesitter.get_parser, args.buf, lang)
+
+    if has_parser then
       vim.opt_local.foldmethod = "expr"
       vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
     else
       vim.opt_local.foldmethod = "indent"
     end
-    vim.opt.foldlevel = 99
   end,
 })
-
-vim.opt.viewoptions:append("folds")
 
 vim.api.nvim_create_autocmd({ "BufWinLeave", "BufWinEnter" }, {
   pattern = "*",
   callback = function(args)
-    if vim.bo.buftype ~= "" or vim.fn.bufname(args.buf) == "" then
+    if vim.bo[args.buf].buftype ~= "" or vim.fn.bufname(args.buf) == "" then
       return
     end
 
     if args.event == "BufWinLeave" then
-      vim.cmd("mkview")
+      vim.cmd("silent! mkview")
     else
       vim.cmd("silent! loadview")
     end
@@ -133,8 +138,12 @@ vim.api.nvim_create_autocmd({ "BufWinLeave", "BufWinEnter" }, {
 -- Use PowerShell as Neovim's shell
 vim.opt.shell = "pwsh"
 vim.opt.shellcmdflag =
-  "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+  "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command "
+vim.opt.shellcmdflag = vim.opt.shellcmdflag:get()
+  .. "$PSStyle.OutputRendering = 'PlainText';"
 
+vim.opt.shellpipe = "2>&1| Out-File -Encoding utf8"
+vim.opt.shellredir = "| Out-File -Encoding utf8"
 vim.opt.shellquote = ""
 vim.opt.shellxquote = ""
 

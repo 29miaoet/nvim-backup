@@ -17,23 +17,31 @@ return {
 
   opts = {
     format_on_save = {
-      timeout_ms = 500,
       lsp_format = "fallback",
     },
 
+    formatters = {
+      prettier = {
+        append_args = { "--no-color" },
+      },
+    },
     formatters_by_ft = {
       python = { "ruff_format" },
 
-      javascript = { "prettier" },
-      javascriptreact = { "prettier" },
-      typescript = { "prettier" },
-      typescriptreact = { "prettier" },
+      javascript = { "biome", "prettier", stop_after_first = true },
+      typescript = { "biome", "prettier", stop_after_first = true },
+      javascriptreact = { "biome", "prettier", stop_after_first = true },
+      typescriptreact = { "biome", "prettier", stop_after_first = true },
+
+      css = { "biome", "prettier", stop_after_first = true },
+      json = { "biome", "prettier", stop_after_first = true },
+      jsonc = { "biome", "prettier", stop_after_first = true },
+
       html = { "prettier" },
-      css = { "prettier" },
       scss = { "prettier" },
-      json = { "prettier" },
-      jsonc = { "prettier" },
       markdown = { "prettier" },
+      yaml = { "prettier" },
+      yml = { "prettier" },
     },
   },
 }

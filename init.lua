@@ -147,7 +147,13 @@ vim.opt.shellredir = "| Out-File -Encoding utf8"
 vim.opt.shellquote = ""
 vim.opt.shellxquote = ""
 
--- IntelliSense for Python, TypeScript/JavaScript, and C++
+-- LSP configs
+
+-- Servers:
+-- Python
+-- TypeScript & JavaScript
+-- C++ & C
+-- Java
 vim.lsp.config("ts_ls", {
   cmd = { "tsc", "--lsp", "--stdio" },
   filetypes = {
@@ -173,10 +179,18 @@ vim.lsp.config("clangd", {
   },
 })
 
+vim.lsp.config("jdtls", {
+  cmd = {
+    "C:/Tools/jdtls/bin/jdtls.bat",
+  },
+  root_markers = { "pom.xml", "build.gradle", ".git" },
+})
+
 -- Enable IntelliSense
 vim.lsp.enable("ts_ls")
 vim.lsp.enable("basedpyright")
 vim.lsp.enable("clangd")
+vim.lsp.enable("jdtls")
 
 -- Custom behavior for erronous code
 vim.diagnostic.config({

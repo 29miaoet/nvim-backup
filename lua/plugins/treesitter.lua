@@ -5,7 +5,7 @@ return {
 
   config = function()
     vim.api.nvim_create_autocmd("FileType", {
-      pattern = { "python", "javascript", "typescript", "cpp", },
+      pattern = { "python", "javascript", "typescript", "cpp", "java" },
       callback = function()
         vim.treesitter.start()
       end,

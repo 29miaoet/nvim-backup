@@ -248,19 +248,27 @@ vim.keymap.set("n", "K", function()
   end
 end)
 
+-- Function to run scripts in a split right window
+local persistent_term_win = nil
 
--- Create a function for running currently open scripts in neovim
 local function run_in_terminal(cmd)
-  vim.cmd("rightbelow vsplit")
+  local win_exists = persistent_term_win and vim.api.nvim_win_is_valid(persistent_term_win)
 
-  local terminal_buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_win_set_buf(0, terminal_buf)
+  if not win_exists then
+    vim.cmd("rightbelow vsplit")
+    persistent_term_win = vim.api.nvim_get_current_win()
+  else
+    vim.api.nvim_set_current_win(persistent_term_win)
+  end
+
+  local term_buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(persistent_term_win, term_buf)
 
   vim.fn.termopen(cmd, {
-    buffer = terminal_buf,
+    buffer = term_buf,
   })
 
-  vim.cmd("startinsert")
+  vim.cmd("wincmd p")
 end
 
 -- Remap leader r to trigger the run scripts function
@@ -271,13 +279,13 @@ vim.keymap.set("n", "<leader>r", function()
   local file = vim.fn.expand("%:p")
 
   local commands = {
-    cpp = { "pwsh", "-NoExit", "-Command", "cpp '" .. file .. "'" },
-    python = { "pwsh", "-NoExit", "-Command", "python '" .. file .. "'" },
-    javascript = { "pwsh", "-NoExit", "-Command", "node '" .. file .. "'" },
-    typescript = { "pwsh", "-NoExit", "-Command", "node '" .. file .. "'" },
-    dosbatch = { "cmd", "/k", file },
-    ps1 = { "pwsh", "-NoExit", "-File", file },
-    html = { "pwsh", "-NoProfile", "-Command", "Start-Process '" .. file .. "'" },
+    python = { "python", file },
+    javascript = { "node", file },
+    typescript = { "node", file },
+    java = { "java", file },
+    ps1 = { "pwsh", "-File", file },
+    dosbatch = { "cmd", "/c", file },
+    html = { "cmd", "/c", "start", "", file },
   }
 
   local cmd = commands[ft]

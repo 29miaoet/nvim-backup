@@ -36,6 +36,7 @@ vim.keymap.set("n", "<leader>r", function()
     ps1 = { "pwsh", "-File", file },
     dosbatch = { "cmd", "/c", file },
     html = { "cmd", "/c", "start", "", file },
+    cpp = { "C:\\Users\\ruido\\Desktop\\Code\\C++\\cpp.exe", file},
   }
 
   local cmd = commands[ft]

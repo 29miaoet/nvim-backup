@@ -29,6 +29,11 @@ vim.lsp.config("clangd", {
     "objc",
     "objcpp",
   },
+  init_options = {
+    fallbackFlags = {
+      "-std=c++23",
+    },
+  }
 })
 
 vim.lsp.config("jdtls", {

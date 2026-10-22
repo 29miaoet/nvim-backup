@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "html", "css", "javascript", "typescript", 
     "javascriptreact", "typescriptreact",
     "lua", "ruby", "yml", "yaml", "xml",
-    "json"
+    "json", "cpp", "c", "objc", "objcpp"
   },
   callback = function()
     vim.bo.tabstop = 2

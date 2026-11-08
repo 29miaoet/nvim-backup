@@ -2,7 +2,8 @@
 local persistent_term_win = nil
 
 local function run_in_terminal(cmd)
-  local win_exists = persistent_term_win and vim.api.nvim_win_is_valid(persistent_term_win)
+  local win_exists = persistent_term_win
+    and vim.api.nvim_win_is_valid(persistent_term_win)
 
   if not win_exists then
     vim.cmd("rightbelow vsplit")
@@ -21,8 +22,7 @@ local function run_in_terminal(cmd)
   vim.cmd("wincmd p")
 end
 
--- Remap leader r to trigger the run scripts function
-vim.keymap.set("n", "<leader>r", function()
+local function run()
   vim.cmd("write")
 
   local ft = vim.bo.filetype
@@ -36,7 +36,7 @@ vim.keymap.set("n", "<leader>r", function()
     ps1 = { "pwsh", "-File", file },
     dosbatch = { "cmd", "/c", file },
     html = { "cmd", "/c", "start", "", file },
-    cpp = { "C:\\Users\\ruido\\Desktop\\Code\\C++\\cpp.exe", file},
+    cpp = { "C:\\Users\\ruido\\Desktop\\Code\\C++\\cpp.exe", file },
   }
 
   local cmd = commands[ft]
@@ -46,7 +46,8 @@ vim.keymap.set("n", "<leader>r", function()
   else
     print("No runner configured for filetype: " .. ft)
   end
-end)
+end
 
-
-
+return {
+  run = run,
+}

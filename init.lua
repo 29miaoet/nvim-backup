@@ -10,8 +10,17 @@ vim.g.loaded_ruby_provider = 0
 -- Load personal configuration
 require("config.options")
 require("config.autocmds")
-require("config.lsp")
-require("config.runner")
+
+vim.keymap.set("n", "<leader>r", function()
+  require("config.runner").run()
+end, { desc = "Run current file" })
+
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+  once = true,
+  callback = function()
+    require("config.lsp")
+  end,
+})
 
 -- Bootstrap Lazy and enable plugins
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

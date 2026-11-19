@@ -40,7 +40,15 @@ vim.lsp.config("jdtls", {
   cmd = {
     "C:/Tools/jdtls/bin/jdtls.bat",
   },
-  root_markers = { "pom.xml", "build.gradle", ".git" },
+  filetypes = { "java" },
+  root_markers = {
+    "pom.xml",
+    "build.gradle",
+    "build.gradle.kts",
+    "settings.gradle",
+    "settings.gradle.kts",
+    "build.xml",
+  },
 })
 
 -- Enable IntelliSense
